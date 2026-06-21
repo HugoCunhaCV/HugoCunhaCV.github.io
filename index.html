@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hugo Cunha &middot; SOC Analyst | Cyber Security | Blue Team</title>
+<meta name="description" content="Hugo Cunha. SOC Analyst and Cyber Security professional based in Porto, Portugal. CV, projects, and TryHackMe writeups.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d1117;
+  --bg-2:#0a0e14;
+  --panel:#121821;
+  --panel-2:#161d28;
+  --line:#1e2733;
+  --line-2:#2a3543;
+  --ink:#e6edf3;
+  --ink-2:#a8b3bf;
+  --ink-dim:#6b7785;
+  --green:#3fb950;
+  --green-dim:#2ea043;
+  --cyan:#79c0ff;
+  --amber:#d29922;
+  --red:#f85149;
+  --mono:'JetBrains Mono', ui-monospace, monospace;
+  --font:'Inter', system-ui, -apple-system, sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--ink);
+  font-size:14.5px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  min-height:100vh;
+}
+a{color:var(--cyan);text-decoration:none}
+a:hover{color:var(--green);text-decoration:underline;text-underline-offset:2px}
+img{max-width:100%;display:block}
+strong,b{color:var(--ink);font-weight:600}
+code,.mono{font-family:var(--mono)}
+
+.shell{display:flex;min-height:100vh}
+
+.sidebar{
+  width:280px;flex-shrink:0;
+  background:var(--bg-2);
+  border-right:1px solid var(--line);
+  padding:28px 22px;
+  position:sticky;top:0;height:100vh;
+  overflow-y:auto;
+}
+
+.avatar-wrap{text-align:center;margin-bottom:16px}
+.avatar{
+  width:140px;height:140px;border-radius:50%;
+  border:2px solid var(--line-2);
+  object-fit:cover;
+  margin:0 auto 14px auto;
+  transition:border-color .3s;
+}
+.avatar:hover{border-color:var(--green)}
+.brand-name{font-size:20px;font-weight:600;text-align:center;color:var(--ink);margin-bottom:3px;letter-spacing:-.3px}
+.brand-tag{
+  font-family:var(--mono);font-size:11px;color:var(--green);
+  text-align:center;line-height:1.55;
+  letter-spacing:.5px;
+}
+.brand-loc{
+  font-family:var(--mono);font-size:11px;color:var(--ink-dim);
+  text-align:center;margin-top:4px;
+}
+.brand-loc::before{content:"● ";color:var(--green)}
+
+.social{
+  display:flex;justify-content:center;gap:10px;
+  margin:18px 0 18px 0;
+}
+.social a{
+  width:34px;height:34px;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--line-2);
+  border-radius:6px;
+  color:var(--ink-2);
+  transition:all .2s;
+  text-decoration:none;
+}
+.social a:hover{border-color:var(--green);color:var(--green);background:var(--panel);text-decoration:none}
+
+.nav{
+  display:flex;flex-direction:column;gap:2px;
+  border-top:1px solid var(--line);
+  padding-top:18px;
+}
+.nav button{
+  background:none;border:none;text-align:left;
+  font-family:var(--mono);font-size:12px;font-weight:500;
+  color:var(--ink-2);
+  padding:10px 12px;cursor:pointer;
+  border-radius:6px;letter-spacing:.5px;
+  text-transform:uppercase;
+  display:flex;align-items:center;gap:10px;
+  transition:all .15s;
+}
+.nav button:hover{background:var(--panel);color:var(--ink)}
+.nav button.active{
+  background:var(--panel);
+  color:var(--green);
+  border-left:2px solid var(--green);
+  padding-left:10px;
+}
+.nav .icon{color:var(--ink-dim);width:14px;text-align:center}
+.nav button.active .icon{color:var(--green)}
+
+.sidebar-foot{
+  position:absolute;bottom:24px;left:22px;right:22px;
+  border-top:1px solid var(--line);padding-top:14px;
+  font-family:var(--mono);font-size:10px;color:var(--ink-dim);
+  text-align:center;letter-spacing:.5px;
+}
+.sidebar-foot .blink{display:inline-block;animation:blink 1.2s steps(2) infinite;color:var(--green)}
+@keyframes blink{50%{opacity:0}}
+
+.main{
+  flex:1;min-width:0;
+  padding:36px 56px 70px 56px;
+  max-width:1080px;
+}
+
+.crumbs{
+  font-family:var(--mono);font-size:11px;
+  color:var(--ink-dim);letter-spacing:1px;
+  margin-bottom:10px;text-transform:uppercase;
+}
+.crumbs span{color:var(--green)}
+
+h1.title{font-size:30px;font-weight:600;letter-spacing:-.5px;margin-bottom:8px;color:var(--ink)}
+.title-sub{color:var(--ink-2);font-size:14.5px;margin-bottom:32px;max-width:680px;line-height:1.65}
+
+.section{display:none;animation:fadein .25s ease-out}
+.section.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+h2{
+  font-family:var(--mono);font-size:13px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;
+  color:var(--green);
+  margin:32px 0 12px 0;
+}
+h2::before{content:"## ";color:var(--ink-dim);font-weight:400}
+
+p{color:var(--ink-2);margin-bottom:10px}
+
+.block{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:6px;padding:20px 22px;margin-bottom:16px;
+}
+
+.log{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:6px;padding:14px 18px;margin-bottom:10px;
+  display:grid;grid-template-columns:80px 1fr 88px;gap:16px;align-items:flex-start;
+}
+.log-date{font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:.5px}
+.log-msg{font-size:13.5px;color:var(--ink)}
+.log-msg b{color:var(--ink)}
+.log-msg .note{display:block;color:var(--ink-2);font-size:12.5px;margin-top:2px}
+.log-tag{
+  font-family:var(--mono);font-size:10px;
+  letter-spacing:1px;text-align:right;
+  padding:3px 8px;border-radius:4px;
+  background:var(--bg-2);color:var(--ink-dim);
+  white-space:nowrap;height:fit-content;
+}
+.log-tag.ok{background:rgba(63,185,80,.1);color:var(--green)}
+.log-tag.run{background:rgba(121,192,255,.1);color:var(--cyan)}
+.log-tag.wait{background:rgba(210,153,34,.1);color:var(--amber)}
+
+.contact-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 24px;margin-bottom:6px;font-size:13.5px}
+.contact-grid div{color:var(--ink-2)}
+.contact-grid a{color:var(--cyan)}
+.contact-grid a:hover{color:var(--green)}
+.contact-grid .lbl{font-family:var(--mono);font-size:11px;color:var(--ink-dim);text-transform:uppercase;letter-spacing:.5px;margin-bottom:1px}
+
+.row{
+  display:grid;grid-template-columns:1fr 130px;gap:14px;
+  padding:10px 0;border-bottom:1px solid var(--line);
+}
+.row:last-child{border:none}
+.row .l-role{color:var(--ink);font-weight:500;font-size:14px}
+.row .l-org{color:var(--ink-2);font-size:12.5px;margin-top:2px}
+.row .l-date{font-family:var(--mono);font-size:11px;color:var(--amber);text-align:right;letter-spacing:.5px;white-space:nowrap}
+
+.downloads{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
+.btn-d{
+  font-family:var(--mono);font-size:11.5px;
+  padding:8px 14px;
+  border:1px solid var(--line-2);
+  background:var(--panel);color:var(--ink);
+  text-decoration:none;letter-spacing:.5px;
+  border-radius:5px;display:inline-flex;align-items:center;gap:6px;
+  transition:all .15s;
+}
+.btn-d:hover{border-color:var(--green);color:var(--green);text-decoration:none}
+.btn-d .arr{color:var(--cyan)}
+.btn-d:hover .arr{color:var(--green)}
+
+.skill-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:8px 24px}
+.skill-row{display:flex;gap:10px;align-items:center;padding:4px 0;font-size:13px}
+.skill-row .label{color:var(--ink);min-width:170px;font-weight:500}
+.skill-row .bar-wrap{flex:1;height:6px;background:var(--bg-2);border-radius:3px;overflow:hidden;border:1px solid var(--line)}
+.skill-row .bar-fill{height:100%;background:linear-gradient(90deg,var(--green-dim),var(--green));border-radius:3px}
+.skill-row .pct{font-family:var(--mono);font-size:11px;color:var(--green);min-width:38px;text-align:right;font-weight:600}
+
+.tool-block{font-size:13.5px}
+.tool-block p{margin-bottom:6px;font-family:var(--mono);font-size:12.5px}
+.tool-block .label{color:var(--green);display:inline-block;width:110px}
+
+.cl-tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:14px;gap:4px}
+.cl-tabs button{
+  background:none;border:none;font-family:var(--mono);font-size:12px;
+  color:var(--ink-dim);padding:8px 14px;cursor:pointer;letter-spacing:.5px;
+  border-bottom:2px solid transparent;margin-bottom:-1px;font-weight:500;
+}
+.cl-tabs button.active{color:var(--green);border-color:var(--green)}
+.cl-tabs button:hover{color:var(--ink)}
+.cl-body{display:none;font-size:13.5px;line-height:1.75;color:var(--ink-2);max-height:480px;overflow-y:auto;padding-right:8px}
+.cl-body.active{display:block}
+.cl-body p{margin-bottom:10px;color:var(--ink-2)}
+.cl-body strong{color:var(--green)}
+.cl-body::-webkit-scrollbar{width:6px}
+.cl-body::-webkit-scrollbar-thumb{background:var(--line-2);border-radius:3px}
+
+.proj{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:6px;padding:20px 22px;margin-bottom:14px;
+  transition:border-color .2s;
+}
+.proj:hover{border-color:var(--line-2)}
+.proj.dim{opacity:.55}
+.proj-h{display:flex;justify-content:space-between;align-items:flex-start;gap:14px;margin-bottom:8px}
+.proj-t{
+  font-family:var(--mono);font-size:15px;
+  color:var(--green);font-weight:600;
+}
+.proj-t::before{content:"./";color:var(--ink-dim);margin-right:2px}
+.proj-s{
+  font-family:var(--mono);font-size:10px;letter-spacing:1px;
+  padding:3px 8px;border-radius:3px;white-space:nowrap;
+}
+.s-live{background:rgba(63,185,80,.1);color:var(--green)}
+.s-wip{background:rgba(210,153,34,.1);color:var(--amber)}
+.s-planned{background:var(--bg-2);color:var(--ink-dim)}
+.proj-d{color:var(--ink-2);font-size:13.5px;margin-bottom:12px;line-height:1.65}
+.proj-meta{display:flex;gap:10px;flex-wrap:wrap;font-family:var(--mono);font-size:11px;color:var(--ink-dim);letter-spacing:.3px}
+.proj-meta a{color:var(--cyan)}
+.proj-meta .sep{color:var(--ink-dim)}
+
+.mod-card{
+  background:var(--panel);border:1px solid var(--line);
+  border-radius:6px;padding:16px 20px;margin-bottom:10px;
+  display:block;text-decoration:none;color:inherit;
+  transition:all .15s;
+  position:relative;
+}
+.mod-card:hover{border-color:var(--green);background:var(--panel-2);text-decoration:none}
+.mod-card .mod-num{font-family:var(--mono);font-size:10.5px;color:var(--ink-dim);letter-spacing:1.5px;margin-bottom:3px}
+.mod-card .mod-num .count{color:var(--green)}
+.mod-card .mod-title{font-size:15px;font-weight:600;color:var(--ink);margin-bottom:4px}
+.mod-card .mod-summary{color:var(--ink-2);font-size:12.5px;line-height:1.55}
+.mod-card .mod-arrow{position:absolute;right:16px;top:18px;color:var(--ink-dim);font-family:var(--mono)}
+.mod-card:hover .mod-arrow{color:var(--green)}
+
+.boot{margin-bottom:18px;font-family:var(--mono);font-size:12.5px}
+.boot .line{display:flex;justify-content:space-between;gap:14px;padding:2px 0;opacity:0;animation:bootline .35s forwards}
+.boot .line .l{color:var(--ink-2)}
+.boot .line .ok{color:var(--green)}
+.boot .line .info{color:var(--cyan)}
+.boot .line .r{color:var(--ink-dim);font-size:11.5px}
+.boot .line:nth-child(1){animation-delay:.10s}
+.boot .line:nth-child(2){animation-delay:.22s}
+.boot .line:nth-child(3){animation-delay:.34s}
+.boot .line:nth-child(4){animation-delay:.46s}
+.boot .line:nth-child(5){animation-delay:.58s}
+.boot .line:nth-child(6){animation-delay:.70s}
+@keyframes bootline{to{opacity:1}}
+
+.menu-btn{display:none;position:fixed;top:14px;left:14px;z-index:100;width:42px;height:42px;border-radius:6px;background:var(--panel);border:1px solid var(--line);color:var(--ink);font-size:20px;cursor:pointer;align-items:center;justify-content:center}
+@media (max-width:920px){
+  .shell{flex-direction:column}
+  .sidebar{position:fixed;left:-300px;height:100vh;z-index:50;transition:left .25s;width:280px}
+  .sidebar.open{left:0;box-shadow:0 0 40px rgba(0,0,0,.7)}
+  .main{padding:60px 22px 60px 22px;max-width:100%}
+  .menu-btn{display:flex}
+}
+</style>
+</head>
+<body>
+
+<button class="menu-btn" id="menuBtn" aria-label="Menu">&#9776;</button>
+
+<div class="shell">
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="avatar-wrap">
+      <img src="headshot.jpg" alt="Hugo Cunha" class="avatar">
+      <div class="brand-name">Hugo Cunha</div>
+      <div class="brand-tag">SOC Analyst &middot; Cyber Security<br>Blue Team</div>
+      <div class="brand-loc">Porto, Portugal</div>
+    </div>
+
+    <div class="social">
+      <a href="https://github.com/HugoCunhaCV" target="_blank" title="GitHub">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+      </a>
+      <a href="https://www.linkedin.com/in/cunhahugo" target="_blank" title="LinkedIn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.3A1.7 1.7 0 1 1 8.2 6.6 1.7 1.7 0 0 1 6.5 8.3zM19 19h-3v-4.7c0-1.1 0-2.5-1.5-2.5s-1.7 1.2-1.7 2.4V19h-3v-9h2.9v1.2A3.2 3.2 0 0 1 15.5 10c3 0 3.5 2 3.5 4.5V19z"/></svg>
+      </a>
+      <a href="mailto:eng.hugocunha@gmail.com" title="Email">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2zm-2 0-8 5-8-5zm0 12H4V8l8 5 8-5z"/></svg>
+      </a>
+    </div>
+
+    <nav class="nav">
+      <button class="nav-link active" data-target="home"><span class="icon">~</span>HOME</button>
+      <button class="nav-link" data-target="cv"><span class="icon">&#9656;</span>CV</button>
+      <button class="nav-link" data-target="projects"><span class="icon">&#9656;</span>PROJECTS</button>
+      <button class="nav-link" data-target="thm"><span class="icon">&#9656;</span>THM WRITEUPS</button>
+    </nav>
+
+    <div class="sidebar-foot">
+      &copy; 2026 HUGO CUNHA<br>
+      STATUS: <span class="blink">●</span> AVAILABLE
+    </div>
+  </aside>
+
+  <main class="main">
+
+    <section class="section active" id="home">
+      <div class="crumbs">~/HOME</div>
+      <h1 class="title">Hi, I'm Hugo.</h1>
+      <p class="title-sub">Cybersecurity professional based in Porto, Portugal, focused on SOC Analyst and Blue Team roles. CompTIA Security+ and ISC2 CC certified, with over twenty years of background in IT infrastructure, networks, and web systems. Currently preparing for Splunk Core Certified User.</p>
+
+      <h2>system status</h2>
+      <div class="block">
+        <div class="boot">
+          <div class="line"><span class="l">[ <span class="ok">OK</span> ] Profile loaded</span><span class="r">identity verified</span></div>
+          <div class="line"><span class="l">[ <span class="ok">OK</span> ] Certifications mounted</span><span class="r">2 active</span></div>
+          <div class="line"><span class="l">[ <span class="info">INFO</span> ] TryHackMe SOC L1 path</span><span class="r">in progress</span></div>
+          <div class="line"><span class="l">[ <span class="info">INFO</span> ] Splunk Core preparation</span><span class="r">active</span></div>
+          <div class="line"><span class="l">[ <span class="ok">OK</span> ] Job search open</span><span class="r">PT / EU / UK remote</span></div>
+          <div class="line"><span class="l">[ <span class="ok">OK</span> ] System ready</span><span class="r">welcome</span></div>
+        </div>
+      </div>
+
+      <h2>recent activity</h2>
+
+      <div class="log">
+        <div class="log-date">2026.06</div>
+        <div class="log-msg"><b>CompTIA Security+ SY0-701</b><span class="note">Certification passed on first attempt. Eight-week prep documented on passlab.</span></div>
+        <span class="log-tag ok">PASSED</span>
+      </div>
+
+      <div class="log">
+        <div class="log-date">2026.04</div>
+        <div class="log-msg"><b>ISC2 Certified in Cybersecurity</b><span class="note">First step into formal cybersecurity certifications, taken under the ISC2 Candidate programme.</span></div>
+        <span class="log-tag ok">PASSED</span>
+      </div>
+
+      <div class="log">
+        <div class="log-date">2026.06</div>
+        <div class="log-msg"><b>TryHackMe SOC Level 1 path</b><span class="note">Working through Blue Team Introduction, SOC Team Internals, Core SOC Solutions, Cyber Defence Frameworks, Phishing Analysis, and Network Traffic Analysis.</span></div>
+        <span class="log-tag run">ACTIVE</span>
+      </div>
+
+      <div class="log">
+        <div class="log-date">2026.07</div>
+        <div class="log-msg"><b>Splunk Core Certified User</b><span class="note">Next certification on the roadmap to round out practical SIEM credentials.</span></div>
+        <span class="log-tag wait">QUEUED</span>
+      </div>
+
+      <h2>what you'll find here</h2>
+      <p><strong>CV</strong> contains the full resume, downloadable PDFs, and cover letters in English and Portuguese.</p>
+      <p><strong>Projects</strong> lists public projects, starting with passlab (study materials for Security+ and ISC2 CC).</p>
+      <p><strong>THM Writeups</strong> tracks progress through the TryHackMe SOC Level 1 path, with notes and walkthroughs for each room (hosted in a dedicated repository).</p>
+    </section>
+
+    <section class="section" id="cv">
+      <div class="crumbs">~/HOME &middot; <span>CV</span></div>
+      <h1 class="title">CV</h1>
+      <p class="title-sub">Full resume, technical skills, work history, and cover letters in English and Portuguese. Downloadable copies below.</p>
+
+      <div class="downloads">
+        <a class="btn-d" href="Hugo_Cunha_CV_2026.pdf" download><span class="arr">&#8595;</span> CV.pdf (EN)</a>
+        <a class="btn-d" href="Hugo_Cunha_Cover_Letter_EN.pdf" download><span class="arr">&#8595;</span> cover_letter_EN.pdf</a>
+        <a class="btn-d" href="Hugo_Cunha_Carta_Apresentacao.pdf" download><span class="arr">&#8595;</span> carta_PT.pdf</a>
+      </div>
+
+      <h2>contact</h2>
+      <div class="block">
+        <div class="contact-grid">
+          <div><div class="lbl">email</div><a href="mailto:eng.hugocunha@gmail.com">eng.hugocunha@gmail.com</a></div>
+          <div><div class="lbl">phone</div><a href="tel:+351915206765">+351 915 206 765</a></div>
+          <div><div class="lbl">linkedin</div><a href="https://www.linkedin.com/in/cunhahugo" target="_blank">linkedin.com/in/cunhahugo</a></div>
+          <div><div class="lbl">github</div><a href="https://github.com/HugoCunhaCV" target="_blank">github.com/HugoCunhaCV</a></div>
+          <div><div class="lbl">location</div><span style="color:var(--ink-2)">Porto, Portugal</span></div>
+          <div><div class="lbl">availability</div><span style="color:var(--ink-2)">On-site, hybrid, remote (PT / EU / UK)</span></div>
+        </div>
+      </div>
+
+      <h2>certifications</h2>
+      <div class="block">
+        <div class="row"><div><div class="l-role">CompTIA Security+ (SY0-701)</div><div class="l-org">CompTIA</div></div><div class="l-date">JUN 2026</div></div>
+        <div class="row"><div><div class="l-role">ISC2 Certified in Cybersecurity (CC)</div><div class="l-org">ISC2 &middot; Candidate Programme</div></div><div class="l-date">APR 2026</div></div>
+        <div class="row"><div><div class="l-role">Junior Security Analyst</div><div class="l-org">TryHackMe &middot; SOC Level 1 path</div></div><div class="l-date">2026</div></div>
+        <div class="row"><div><div class="l-role">Splunk Core Certified User</div><div class="l-org">Splunk &middot; in preparation</div></div><div class="l-date">2026</div></div>
+      </div>
+
+      <h2>experience</h2>
+      <div class="block">
+        <div class="row"><div><div class="l-role">Network Engineer</div><div class="l-org">MTM</div></div><div class="l-date">2019 - 2026</div></div>
+        <div class="row"><div><div class="l-role">Web Developer</div><div class="l-org">Alliance BJJ Porto</div></div><div class="l-date">2019 - 2026</div></div>
+        <div class="row"><div><div class="l-role">Marketing Manager &amp; Helpdesk</div><div class="l-org">Virgin Media U.K.</div></div><div class="l-date">2013 - 2017</div></div>
+        <div class="row"><div><div class="l-role">Software Developer for Xbox</div><div class="l-org">Microsoft Portugal</div></div><div class="l-date">2013 - 2014</div></div>
+        <div class="row"><div><div class="l-role">Webserver System Security Admin</div><div class="l-org">MicroDual</div></div><div class="l-date">2012 - 2014</div></div>
+        <div class="row"><div><div class="l-role">Webserver System Security Admin</div><div class="l-org">Axtion Games</div></div><div class="l-date">2003 - 2014</div></div>
+        <div class="row"><div><div class="l-role">Backend Developer Partner</div><div class="l-org">Pop Corn Time</div></div><div class="l-date">2012 - now</div></div>
+        <div class="row"><div><div class="l-role">Backend Developer Partner</div><div class="l-org">Reddit Online</div></div><div class="l-date">2010 - now</div></div>
+        <div class="row"><div><div class="l-role">Webserver System Security Admin</div><div class="l-org">100Loops</div></div><div class="l-date">2010 - now</div></div>
+        <div class="row"><div><div class="l-role">Junior Data Analyst &amp; Software Developer</div><div class="l-org">Apple Cambridge</div></div><div class="l-date">2010 - 2012</div></div>
+        <div class="row"><div><div class="l-role">macOS Beta Tester</div><div class="l-org">Apple</div></div><div class="l-date">2006 - now</div></div>
+        <div class="row"><div><div class="l-role">Web Designer</div><div class="l-org">Dealema Musicians</div></div><div class="l-date">1999 - 2003</div></div>
+      </div>
+
+      <h2>education</h2>
+      <div class="block">
+        <div class="row"><div><div class="l-role">Summer School &middot; Network Operating Systems</div><div class="l-org">FEUP, University of Porto</div></div><div class="l-date">2006</div></div>
+        <div class="row"><div><div class="l-role">Summer School &middot; Network Protocols &amp; Equipment</div><div class="l-org">FEUP, University of Porto</div></div><div class="l-date">2006</div></div>
+        <div class="row"><div><div class="l-role">IT Technician, Level 4</div><div class="l-org">Fontes Pereira de Melo &middot; FEUP</div></div><div class="l-date">2006</div></div>
+      </div>
+
+      <h2>skills</h2>
+      <div class="block">
+        <div class="skill-list">
+          <div class="skill-row"><span class="label">Network Security</span><span class="bar-wrap"><span class="bar-fill" style="width:95%"></span></span><span class="pct">95%</span></div>
+          <div class="skill-row"><span class="label">Linux / Windows Admin</span><span class="bar-wrap"><span class="bar-fill" style="width:85%"></span></span><span class="pct">85%</span></div>
+          <div class="skill-row"><span class="label">SIEM (Splunk, ELK)</span><span class="bar-wrap"><span class="bar-fill" style="width:70%"></span></span><span class="pct">70%</span></div>
+          <div class="skill-row"><span class="label">Incident Response</span><span class="bar-wrap"><span class="bar-fill" style="width:70%"></span></span><span class="pct">70%</span></div>
+          <div class="skill-row"><span class="label">MITRE ATT&amp;CK</span><span class="bar-wrap"><span class="bar-fill" style="width:70%"></span></span><span class="pct">70%</span></div>
+          <div class="skill-row"><span class="label">Wireshark / NetworkMiner</span><span class="bar-wrap"><span class="bar-fill" style="width:65%"></span></span><span class="pct">65%</span></div>
+          <div class="skill-row"><span class="label">Cryptography &amp; PKI</span><span class="bar-wrap"><span class="bar-fill" style="width:65%"></span></span><span class="pct">65%</span></div>
+          <div class="skill-row"><span class="label">Bash / PowerShell</span><span class="bar-wrap"><span class="bar-fill" style="width:70%"></span></span><span class="pct">70%</span></div>
+          <div class="skill-row"><span class="label">Python</span><span class="bar-wrap"><span class="bar-fill" style="width:50%"></span></span><span class="pct">50%</span></div>
+          <div class="skill-row"><span class="label">Cloud (AWS / Azure)</span><span class="bar-wrap"><span class="bar-fill" style="width:40%"></span></span><span class="pct">40%</span></div>
+        </div>
+      </div>
+
+      <h2>tooling &amp; frameworks</h2>
+      <div class="block tool-block">
+        <p><span class="label">OS</span> Kali Linux, Ubuntu, CentOS, Windows Server, Windows 10/11, macOS</p>
+        <p><span class="label">Network</span> LAN/WAN, VLANs, VPNs, firewalls, DHCP, DNS, NAT, Cisco routers</p>
+        <p><span class="label">Blue Team</span> Splunk, Elastic Stack (ELK), MITRE ATT&amp;CK, alert triage, alert reporting</p>
+        <p><span class="label">Forensics</span> Wireshark, NetworkMiner, digital forensics, chain of custody</p>
+        <p><span class="label">Frameworks</span> NIST CSF, ISO 27001/27002, OWASP Top 10</p>
+        <p><span class="label">Crypto</span> certificate management, digital signatures, hashing, key exchange</p>
+      </div>
+
+      <h2>cover letter</h2>
+      <div class="block">
+        <div class="cl-tabs">
+          <button class="active" data-cl="en">English</button>
+          <button data-cl="pt">Português</button>
+        </div>
+        <div class="cl-body active" id="cl-en">
+          <p>I am an IT professional with over twenty years of experience, recently transitioned into the cybersecurity field, holding the <strong>CompTIA Security+ (SY0-701)</strong> certification obtained in June 2026 and the <strong>ISC2 Certified in Cybersecurity (CC)</strong> obtained in April 2026. I am submitting my application for roles in Information Security, SOC Analyst, or Cyber Security Analyst positions.</p>
+          <p>As a Systems Analyst with more than eight years of consolidated experience managing technology infrastructure across corporate and institutional environments, I am specialised in Linux and Windows systems administration, enterprise network management, IT security, and the integration of collaborative platforms.</p>
+          <p>Throughout my career, I have built consistent experience in web server administration, complex network management, systems hardening, disaster recovery, and data integrity protection. More recently, my hands-on training has focused on Blue Team operations through the TryHackMe platform, where I have completed the SOC Level 1 Learning Path, including practical modules in <strong>Splunk, Elastic Stack, MITRE ATT&amp;CK, SOC L1 Alert Triage, SOC L1 Alert Reporting, and SOC Simulator</strong>. I am currently preparing for the Splunk Core Certified User certification.</p>
+          <p>I am highly motivated to join a cybersecurity team where I can contribute my experience, dedication, and continuous willingness to learn. I am available for an interview at your convenience.</p>
+          <p>Kind regards,<br><strong>Hugo Cunha</strong></p>
+        </div>
+        <div class="cl-body" id="cl-pt">
+          <p>Sou um profissional com mais de vinte anos de experiência em tecnologias de informação, recentemente reconvertido para a área da cibersegurança, com as certificações <strong>CompTIA Security+ (SY0-701)</strong> obtida em junho de 2026 e <strong>ISC2 Certified in Cybersecurity (CC)</strong> obtida em abril de 2026. Apresento a minha candidatura para funções de Analista de Segurança Informática, SOC Analyst ou Cyber Security Analyst.</p>
+          <p>Analista de Sistemas com mais de oito anos de experiência consolidada na gestão de infra-estruturas tecnológicas em ambientes empresariais e institucionais, encontro-me especializado em administração de sistemas Linux e Windows, gestão de redes corporativas, segurança informática e integração de plataformas colaborativas.</p>
+          <p>Ao longo do meu percurso profissional, acumulei experiência consistente em administração de servidores web, gestão de redes complexas, hardening de sistemas, recuperação de desastres e proteção de integridade de dados. Mais recentemente, a minha formação prática tem incidido sobre operações de Blue Team através da plataforma TryHackMe, onde concluí o percurso SOC Level 1 Learning Path, incluindo módulos práticos em <strong>Splunk, Elastic Stack, MITRE ATT&amp;CK, SOC L1 Alert Triage, SOC L1 Alert Reporting e SOC Simulator</strong>. Encontro-me atualmente em preparação para a certificação Splunk Core Certified User.</p>
+          <p>Encontro-me altamente motivado para integrar uma equipa de cibersegurança onde possa contribuir com a minha experiência, dedicação e vontade de aprender continuamente. Coloco-me à vossa disposição para uma entrevista.</p>
+          <p>Com os melhores cumprimentos,<br><strong>Hugo Cunha</strong></p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="projects">
+      <div class="crumbs">~/HOME &middot; <span>PROJECTS</span></div>
+      <h1 class="title">Projects</h1>
+      <p class="title-sub">Public projects and study notes on GitHub, each in its own repository.</p>
+
+      <div class="proj">
+        <div class="proj-h"><div class="proj-t">passlab</div><span class="proj-s s-live">LIVE</span></div>
+        <div class="proj-d">Open notebook of study materials for the CompTIA Security+ (SY0-701) and ISC2 Certified in Cybersecurity exams. Weekly schedules, around 50 interactive flashcards, the resources used, a chart of practice exam scores, and an honest review of what helped.</div>
+        <div class="proj-meta"><a href="https://hugocunhacv.github.io/passlab/" target="_blank">hugocunhacv.github.io/passlab</a><span class="sep">/</span><a href="https://github.com/HugoCunhaCV/passlab" target="_blank">repo</a></div>
+      </div>
+
+      <div class="proj">
+        <div class="proj-h"><div class="proj-t">thm</div><span class="proj-s s-wip">IN PROGRESS</span></div>
+        <div class="proj-d">Walkthroughs and notes for the six modules of the TryHackMe SOC Level 1 path. 31 rooms total, filled in as I complete them.</div>
+        <div class="proj-meta"><a href="https://hugocunhacv.github.io/thm/" target="_blank">hugocunhacv.github.io/thm</a><span class="sep">/</span><a href="https://github.com/HugoCunhaCV/thm" target="_blank">repo</a></div>
+      </div>
+
+      <div class="proj dim">
+        <div class="proj-h"><div class="proj-t">hackthebox</div><span class="proj-s s-planned">PLANNED</span></div>
+        <div class="proj-d">Walkthroughs and notes for HackTheBox machines and challenges.</div>
+        <div class="proj-meta">github.com/HugoCunhaCV/hackthebox</div>
+      </div>
+
+      <div class="proj dim">
+        <div class="proj-h"><div class="proj-t">portswigger</div><span class="proj-s s-planned">PLANNED</span></div>
+        <div class="proj-d">Notes and solutions for the PortSwigger Web Security Academy labs, covering OWASP Top 10 vulnerabilities in practice.</div>
+        <div class="proj-meta">github.com/HugoCunhaCV/portswigger</div>
+      </div>
+    </section>
+
+    <section class="section" id="thm">
+      <div class="crumbs">~/HOME &middot; <span>THM WRITEUPS</span></div>
+      <h1 class="title">TryHackMe Writeups</h1>
+      <p class="title-sub">Notes and walkthroughs for the TryHackMe SOC Level 1 learning path. Six modules, thirty-one rooms. The writeups live in a dedicated repository at <a href="https://github.com/HugoCunhaCV/thm" target="_blank">github.com/HugoCunhaCV/thm</a>. Click a module to open.</p>
+
+      <a class="mod-card" href="https://hugocunhacv.github.io/thm/">
+        <div class="mod-num">MODULE 01 &middot; <span class="count">4 rooms</span></div>
+        <div class="mod-title">Blue Team Introduction</div>
+        <div class="mod-summary">Junior Security Analyst Intro &middot; SOC Role in Blue Team &middot; Humans as Attack Vectors &middot; Systems as Attack Vectors</div>
+        <div class="mod-arrow">&rarr;</div>
+      </a>
+
+      <a class="mod-card" href="https://hugocunhacv.github.io/thm/">
+        <div class="mod-num">MODULE 02 &middot; <span class="count">4 rooms</span></div>
+        <div class="mod-title">SOC Team Internals</div>
+        <div class="mod-summary">SOC L1 Alert Triage &middot; Alert Reporting &middot; Workbooks and Lookups &middot; Metrics and Objectives</div>
+        <div class="mod-arrow">&rarr;</div>
+      </a>
+
+      <a class="mod-card" href="https://hugocunhacv.github.io/thm/">
+        <div class="mod-num">MODULE 03 &middot; <span class="count">5 rooms</span></div>
+        <div class="mod-title">Core SOC Solutions</div>
+        <div class="mod-summary">Introduction to EDR &middot; SIEM &middot; Splunk: The Basics &middot; Elastic Stack &middot; Introduction to SOAR</div>
+        <div class="mod-arrow">&rarr;</div>
+      </a>
+
+      <a class="mod-card" href="https://hugocunhacv.github.io/thm/">
+        <div class="mod-num">MODULE 04 &middot; <span class="count">6 rooms</span></div>
+        <div class="mod-title">Cyber Defence Frameworks</div>
+        <div class="mod-summary">Pyramid of Pain &middot; Cyber Kill Chain &middot; Unified Kill Chain &middot; MITRE &middot; Summit &middot; Eviction</div>
+        <div class="mod-arrow">&rarr;</div>
+      </a>
+
+      <a class="mod-card" href="https://hugocunhacv.github.io/thm/">
+        <div class="mod-num">MODULE 05 &middot; <span class="count">7 rooms</span></div>
+        <div class="mod-title">Phishing Analysis</div>
+        <div class="mod-summary">Fundamentals &middot; Phishing Emails in Action &middot; Analysis Tools &middot; Prevention &middot; The Greenholt Phish &middot; Snapped Phish-ing Line &middot; Phishing Unfolding</div>
+        <div class="mod-arrow">&rarr;</div>
+      </a>
+
+      <a class="mod-card" href="https://hugocunhacv.github.io/thm/">
+        <div class="mod-num">MODULE 06 &middot; <span class="count">5 rooms</span></div>
+        <div class="mod-title">Network Traffic Analysis</div>
+        <div class="mod-summary">Network Traffic Basics &middot; Wireshark: The Basics &middot; Packet Operations &middot; Traffic Analysis &middot; NetworkMiner</div>
+        <div class="mod-arrow">&rarr;</div>
+      </a>
+
+    </section>
+
+  </main>
+</div>
+
+<script>
+const tabs = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('.section');
+const sidebar = document.getElementById('sidebar');
+
+tabs.forEach(b => {
+  b.addEventListener('click', () => {
+    const t = b.dataset.target;
+    tabs.forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    sections.forEach(s => s.classList.toggle('active', s.id === t));
+    window.scrollTo({top:0,behavior:'instant'});
+    sidebar.classList.remove('open');
+    history.replaceState(null,'','#'+t);
+  });
+});
+
+const initial = location.hash.replace('#','');
+if(initial){
+  const b = document.querySelector('.nav-link[data-target="'+initial+'"]');
+  if(b) b.click();
+}
+
+document.querySelectorAll('.cl-tabs button').forEach(b => {
+  b.addEventListener('click', () => {
+    const t = b.dataset.cl;
+    document.querySelectorAll('.cl-tabs button').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    document.querySelectorAll('.cl-body').forEach(x => x.classList.remove('active'));
+    document.getElementById('cl-'+t).classList.add('active');
+  });
+});
+
+document.getElementById('menuBtn').addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+});
+</script>
+
+</body>
+</html>
