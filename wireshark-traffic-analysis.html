@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wireshark: Traffic Analysis &middot; Writeup &middot; Hugo Cunha</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<button class="menu-btn" id="menuBtn" aria-label="Menu">&#9776;</button>
+<div class="shell">
+  <aside class="sidebar" id="sidebar">
+    <div class="avatar-wrap">
+      <a href="../../index.html"><img src="../../headshot.jpg" alt="Hugo Cunha" class="avatar"></a>
+      <div class="brand-name"><a href="../../index.html">Hugo Cunha</a></div>
+      <div class="brand-tag">SOC Analyst &middot; Cyber Security<br>Blue Team</div>
+      <div class="brand-loc">Porto, Portugal</div>
+    </div>
+    <div class="social">
+      <a href="https://github.com/HugoCunhaCV" target="_blank" title="GitHub"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.6-1.4-1.4-1.8-1.4-1.8-1.1-.7.1-.7.1-.7 1.2.1 1.9 1.2 1.9 1.2 1.1 1.9 2.9 1.3 3.6 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.4 1.3-3.2-.1-.4-.6-1.6.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.7 1.6.2 2.8.1 3.2.8.8 1.3 1.9 1.3 3.2 0 4.6-2.8 5.6-5.5 5.9.4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg></a>
+      <a href="https://www.linkedin.com/in/cunhahugo" target="_blank" title="LinkedIn"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 2h-17A1.5 1.5 0 0 0 2 3.5v17A1.5 1.5 0 0 0 3.5 22h17a1.5 1.5 0 0 0 1.5-1.5v-17A1.5 1.5 0 0 0 20.5 2zM8 19H5v-9h3v9zM6.5 8.3A1.7 1.7 0 1 1 8.2 6.6 1.7 1.7 0 0 1 6.5 8.3zM19 19h-3v-4.7c0-1.1 0-2.5-1.5-2.5s-1.7 1.2-1.7 2.4V19h-3v-9h2.9v1.2A3.2 3.2 0 0 1 15.5 10c3 0 3.5 2 3.5 4.5V19z"/></svg></a>
+      <a href="mailto:eng.hugocunha@gmail.com" title="Email"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M22 6a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2zm-2 0-8 5-8-5zm0 12H4V8l8 5 8-5z"/></svg></a>
+    </div>
+    <nav class="nav">
+      <a href="../../index.html"><span class="icon">~</span>HOME</a>
+      <a href="../../projects.html"><span class="icon">▸</span>PROJECTS</a>
+      <a href="../../writeups.html" class="active"><span class="icon">▸</span>WRITEUPS</a>
+      <a href="../../cv.html"><span class="icon">▸</span>CV</a>
+    </nav>
+    <div class="sidebar-foot">
+      &copy; 2026 HUGO CUNHA<br>
+      STATUS: <span class="blink">●</span> AVAILABLE
+    </div>
+  </aside>
+  <main class="main">
+    <div class="crumbs"><a href="../../index.html">~/HOME</a> &middot; <a href="../../writeups.html">WRITEUPS</a> &middot; <a href="../../writeups.html">Network Traffic Analysis</a> &middot; <span>Wireshark: Traffic Analysis</span></div>
+    <h1 class="title">Wireshark: Traffic Analysis</h1>
+    <p class="title-sub">Basics of traffic analysis with Wireshark and how to find anomalies on a network.</p>
+
+    <div class="meta-grid">
+      <div class="meta-card"><div class="meta-label">MODULE</div><div class="meta-val">06 &middot; Network Traffic Analysis</div></div>
+      <div class="meta-card"><div class="meta-label">ROOM</div><div class="meta-val">4 of 5</div></div>
+      <div class="meta-card"><div class="meta-label">STATUS</div><div class="meta-val amber">Writeup in progress</div></div>
+      <div class="meta-card"><div class="meta-label">PLATFORM</div><div class="meta-val">TryHackMe</div></div>
+    </div>
+
+    <div class="tba-banner">&#9656; WRITEUP COMING SOON &middot; this page is a placeholder and will be filled in once the room notes are finalised.</div>
+
+    <h2>overview</h2>
+    <div class="block tba"><p style="color:var(--ink-dim);font-style:italic">A short description of what the room covers and why it matters for a SOC Level 1 analyst will go here.</p></div>
+
+    <h2>objectives</h2>
+    <div class="block tba"><p style="color:var(--ink-dim);font-style:italic">The learning objectives stated in the room will be summarised here in bullet form.</p></div>
+
+    <h2>tools used</h2>
+    <div class="block tba"><p style="color:var(--ink-dim);font-style:italic">Tools, platforms, or commands used to solve this room will be listed here.</p></div>
+
+    <h2>walkthrough</h2>
+    <div class="block tba">
+      <div class="task">
+        <div class="task-meta">TASK 1</div>
+        <div class="task-q">Question text from the room.</div>
+        <div class="task-notes" style="color:var(--ink-dim);font-style:italic">Reasoning, screenshots, and commands used to find the answer will go here.</div>
+        <div class="task-a">answer</div>
+      </div>
+      <div class="task">
+        <div class="task-meta">TASK 2</div>
+        <div class="task-q">Next question.</div>
+        <div class="task-notes" style="color:var(--ink-dim);font-style:italic">Notes go here.</div>
+        <div class="task-a">answer</div>
+      </div>
+    </div>
+
+    <h2>key takeaways</h2>
+    <div class="block tba"><p style="color:var(--ink-dim);font-style:italic">Three to five short bullets summarising what was learned in this room and how it applies to real SOC work.</p></div>
+
+    <div class="pager"><a href="wireshark-packet-operations.html"><span class="label">PREV</span><span class="arrow">&larr;</span> Wireshark: Packet Operations</a><a href="networkminer.html" class="next"><span class="label">NEXT</span>NetworkMiner <span class="arrow">&rarr;</span></a></div>
+
+  </main>
+</div>
+<script>
+document.getElementById('menuBtn').addEventListener('click',()=>{document.getElementById('sidebar').classList.toggle('open');});
+
+</script>
+</body>
+</html>
